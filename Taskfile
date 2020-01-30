@@ -16,10 +16,21 @@ build() {
     set +x
 }
 
-
-# Build frontend package
-build_f() {
-    ng-packagr
+bundle() {
+    set -x
+    rm -rfv dist
+    cp -rfv src dist
+    cat tsconfig.json | jq '.compilerOptions.module = "esnext" | del(.include, .compilerOptions.outDir)' > dist/tsconfig.json
+    cp -v README.md LICENSE package.json dist
+    cd dist
+    /usr/bin/find . -name '*.spec.ts' | xargs rm -rvf
+    npx microbundle -i index.ts --no-compress -f es,umd -o .
+    rm -rvf tsconfig.json
+    /usr/bin/find . -name '.rts2*' | xargs rm -rf
+    cat package.json | jq '.main = "injectant.umd.js"' > package.json
+    cat package.json | jq '.module = "injectant.mjs"' > package.json
+    cd ..
+    set +x
 }
 
 eslint_run() {

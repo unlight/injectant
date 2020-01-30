@@ -41,12 +41,12 @@
     "cmlint": "sh Taskfile commit_lint",
     "semantic-release": "semantic-release",
     "dev": "node node_modules/webpack-dev-server/bin/webpack-dev-server",
-    "build": "sh Taskfile build"
+    "xbuild": "sh Taskfile build",
+    "build": "sh Taskfile bundle"
   },
   "dependencies": {},
   "peerDependencies": {
-    "@abraham/reflection": "^0.7.0",
-    "tslib": "^1.10.0"
+    "@abraham/reflection": "^0.7.0"
   },
   "husky": {
     "hooks": {
