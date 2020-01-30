@@ -1,9 +1,33 @@
-import * as library from '.';
+import '@abraham/reflection';
+import { Injectable, Injector } from '.';
 
 it('smoke', () => {
-    expect(library).toBeTruthy();
+    expect(Injectable).toBeTruthy();
 });
 
-it('hello test', () => {
-    expect(library.hello()).toBe('Hello world');
+it('cat', () => {
+    @Injectable()
+    class Cat {
+        sound = () => 'meow';
+    }
+    const cat = Injector.get(Cat);
+    expect(cat.sound()).toEqual('meow');
+});
+
+it('three tier', () => {
+    @Injectable()
+    class ParkService {
+        welcome = () => 'Welcome to park';
+    }
+
+    @Injectable()
+    class ZooController {
+        constructor(private service: ParkService) {}
+        go() {
+            return this.service.welcome();
+        }
+    }
+
+    const controller = Injector.resolve(ZooController);
+    expect(controller.go()).toEqual('Welcome to park');
 });

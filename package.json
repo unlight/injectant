@@ -4,12 +4,20 @@
   "license": "MIT",
   "description": "Dependency injection implementation in TypeScript",
   "main": "index.js",
-  "typings": "index.d.ts",
+  "typings": "index.ts",
   "author": "2020",
   "keywords": [],
   "engines": {
     "node": ">=12"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unlight/injectant.git"
+  },
+  "bugs": {
+    "url": "https://github.com/unlight/injectant/issues"
+  },
+  "homepage": "https://github.com/unlight/injectant#readme",
   "scripts": {
     "test": "npm run eslint && npm run tscheck && npm run test:cov && npm run typecov",
     "test:r": "node node_modules/jest/bin/jest --runInBand --verbose",
@@ -36,7 +44,9 @@
     "build": "sh Taskfile build"
   },
   "dependencies": {},
-  "peerDependencies": {},
+  "peerDependencies": {
+    "@abraham/reflection": "^0.7.0"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "precise-commits",
@@ -45,6 +55,7 @@
     }
   },
   "devDependencies": {
+    "@abraham/reflection": "^0.7.0",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@semantic-release/changelog": "^5.0.0",
@@ -84,17 +95,5 @@
     "type-coverage": "^2.4.0",
     "typescript": "~3.7.5",
     "watchexec-bin": "^1.0.0"
-  },
-  "directories": {
-    "example": "example",
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/unlight/injectant.git"
-  },
-  "bugs": {
-    "url": "https://github.com/unlight/injectant/issues"
-  },
-  "homepage": "https://github.com/unlight/injectant#readme"
+  }
 }
