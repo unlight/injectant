@@ -1,11 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "experimentalDecorators": true ,
+    "importHelpers": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "types": [
-      "node", "mocha", "chai"
-    ]
-  }
+    "outDir": "dist",
+    "pretty": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "declaration": false,
+    "declarationMap": false,
+    "skipLibCheck": true,
+    "lib": ["esnext"]
+  },
+  "include": ["src/**/*.ts"]
 }

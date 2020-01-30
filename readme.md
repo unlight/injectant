@@ -1,3 +1,4 @@
-# Dependency Injection in TypeScript
+# injectant
 
-Basic DI implementation in TS, see [nehalist.io/dependency-injection-in-typescript/](https://nehalist.io/dependency-injection-in-typescript/).
+Dependency injection implementation in TypeScript,
+based on [nehalist.io/dependency-injection-in-typescript](https://nehalist.io/dependency-injection-in-typescript).
