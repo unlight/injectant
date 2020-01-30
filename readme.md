@@ -18,3 +18,31 @@ npm install injectant --save
 -   [@abraham/reflection](https://github.com/abraham/reflection) is ~3K
 
 2. tslib
+
+## Usage
+
+```ts
+import '@abraham/reflection';
+import { Injectable, Injector } from 'injectant';
+
+@Service()
+class Foo {}
+
+@Service()
+class Bar {}
+
+@Service()
+class Foobar {
+    constructor(public foo: Foo, public bar: Bar) {}
+}
+
+@Service()
+class Baz {
+    constructor(public foobar: Foobar) {}
+}
+
+let baz = Injector.resolve(Baz);
+console.log(baz.foobar); // instance of Foobar
+console.log(baz.foobar.foo); // instance of Foo
+console.log(baz.foobar.bar); // instance of Bar
+```
