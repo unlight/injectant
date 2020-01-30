@@ -50,6 +50,8 @@
     "no-increment-decrement": false,
     "no-unnecessary-bind": false,
     "linebreak-style": false,
-    "no-parameter-properties": false
+    "no-parameter-properties": false,
+    "no-any": false,
+    "newline-per-chained-call": false
   }
 }

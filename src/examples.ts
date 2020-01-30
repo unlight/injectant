@@ -1,4 +1,4 @@
-import { Service, Injector } from '.';
+import { Injector, Service } from '.';
 
 @Service()
 class Foo {
@@ -40,10 +40,10 @@ class DatabaseHandler {
 
 @Service()
 class Logger {
-    constructor(protected dbHandler: DatabaseHandler) {}
+    constructor(private readonly databaseHandler) {}
 
     info(message: string) {
-        this.dbHandler.insert('log', {
+        this.databaseHandler.insert('log', {
             level: 200,
             message: message,
         });

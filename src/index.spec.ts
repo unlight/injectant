@@ -1,4 +1,5 @@
 import '@abraham/reflection';
+
 import { Injectable, Injector, Service } from '.';
 
 it('smoke', () => {
@@ -22,7 +23,7 @@ it('three tier', () => {
 
     @Injectable()
     class ZooController {
-        constructor(private service: ParkService) {}
+        constructor(private readonly service: ParkService) {}
         go() {
             return this.service.welcome();
         }
@@ -50,18 +51,18 @@ describe('Injector', () => {
     }
 
     it('should create simple instances', () => {
-        let foo = Injector.resolve(Foo);
+        const foo = Injector.resolve(Foo);
         expect(foo).toBeInstanceOf(Foo);
     });
 
     it('should create dependency injected instances', () => {
-        let foobar = Injector.resolve(Foobar);
+        const foobar = Injector.resolve(Foobar);
         expect(foobar.foo).toBeInstanceOf(Foo);
         expect(foobar.bar).toBeInstanceOf(Bar);
     });
 
     it('should create deep dependency injected instances', () => {
-        let baz = Injector.resolve(Baz);
+        const baz = Injector.resolve(Baz);
         expect(baz.foobar).toBeInstanceOf(Foobar);
         expect(baz.foobar.foo).toBeInstanceOf(Foo);
         expect(baz.foobar.bar).toBeInstanceOf(Bar);

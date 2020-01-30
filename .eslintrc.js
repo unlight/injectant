@@ -73,6 +73,7 @@ module.exports = {
         'sort-imports': 'off',
         'import/order': 'off',
         // tslint
+        '@typescript-eslint/no-explicit-any': 0,
         '@typescript-eslint/no-use-before-define': 0,
         '@typescript-eslint/no-floating-promises': 1,
         '@typescript-eslint/explicit-function-return-type': 0,

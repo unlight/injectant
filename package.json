@@ -41,7 +41,7 @@
     "cmlint": "sh Taskfile commit_lint",
     "semantic-release": "semantic-release",
     "dev": "node node_modules/webpack-dev-server/bin/webpack-dev-server",
-    "xbuild": "sh Taskfile build",
+    "tscbuild": "sh Taskfile build",
     "build": "sh Taskfile bundle"
   },
   "dependencies": {},
