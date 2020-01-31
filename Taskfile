@@ -27,8 +27,10 @@ bundle() {
     npx microbundle -i index.ts --no-compress -f es,umd -o .
     rm -rvf tsconfig.json
     /usr/bin/find . -name '.rts2*' | xargs rm -rf
-    cat package.json | jq '.main = "injectant.umd.js"' > package.json
-    cat package.json | jq '.module = "injectant.mjs"' > package.json
+    package=$(cat package.json)
+    echo "$package" | jq '.main = "injectant.umd.js"' \
+        | jq '.module = "injectant.mjs"' \
+        > package.json
     cd ..
     set +x
 }
