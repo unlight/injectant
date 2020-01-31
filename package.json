@@ -3,7 +3,8 @@
   "version": "0.0.0-dev",
   "license": "MIT",
   "description": "Dependency injection implementation in TypeScript",
-  "main": "index.js",
+  "main": "index.ts",
+  "module": "injectant.mjs",
   "typings": "index.ts",
   "author": "2020",
   "keywords": [],
@@ -42,7 +43,7 @@
     "semantic-release": "semantic-release",
     "dev": "node node_modules/webpack-dev-server/bin/webpack-dev-server",
     "tscbuild": "sh Taskfile build",
-    "build": "sh Taskfile bundle"
+    "build": "sh Taskfile bundle && cat dist/package.json | jq"
   },
   "dependencies": {},
   "peerDependencies": {
