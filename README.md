@@ -21,12 +21,12 @@ Reflection (any of):
 
 ```ts
 import '@abraham/reflection';
-import { Injectable, Injector } from 'injectant';
+import { Service, Injectable, Injector } from 'injectant';
 
 @Service()
 class Foo {}
 
-@Service()
+@Injectable() // Injectable is alias of Service
 class Bar {}
 
 @Service()
