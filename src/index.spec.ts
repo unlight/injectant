@@ -33,6 +33,25 @@ it('three tier', () => {
     expect(controller.go()).toEqual('Welcome to park');
 });
 
+it('provide and reset', () => {
+    @Injectable()
+    class Cat {
+        sound = () => 'meow';
+    }
+
+    class Fluffy {
+        sound = () => 'FluffyMEEOOW';
+    }
+
+    Injector.provide(Cat, Fluffy);
+    let cat = Injector.get(Cat);
+    expect(cat.sound()).toEqual('FluffyMEEOOW');
+
+    Injector.clear();
+    cat = Injector.get(Cat);
+    expect(cat.sound()).toEqual('meow');
+});
+
 describe('Injector', () => {
     @Service()
     class Foo {}

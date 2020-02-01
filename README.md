@@ -44,3 +44,15 @@ console.log(baz.foobar); // instance of Foobar
 console.log(baz.foobar.foo); // instance of Foo
 console.log(baz.foobar.bar); // instance of Bar
 ```
+
+## Usage in unit tests
+
+```ts
+describe('Suite', () => {
+    it('test baz', () => {
+        Injector.provide(Foobar, MockFooBar);
+        let baz = Injector.resolve(Baz);
+        console.log(baz.foobar); // instance of MockFooBar
+    });
+});
+```
