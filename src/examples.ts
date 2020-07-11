@@ -31,7 +31,7 @@ foobar.bar.foo.doFooStuff();
 //
 
 @Service()
-class DatabaseHandler {
+export class DatabaseHandler {
     insert(table: string, data: { [column: string]: string | number }) {
         console.log(`writing to ${table}:`);
         console.log(data);
@@ -40,7 +40,7 @@ class DatabaseHandler {
 
 @Service()
 class Logger {
-    constructor(private readonly databaseHandler) {}
+    constructor(private readonly databaseHandler: DatabaseHandler) {}
 
     info(message: string) {
         this.databaseHandler.insert('log', {
@@ -52,7 +52,7 @@ class Logger {
 
 //  Classes without decorators do NOT emit metadata, hence we need to decorate the controller class.
 const Controller = (): ClassDecorator => {
-    return target => {
+    return (target) => {
         // maybe do something with controller here
     };
 };
