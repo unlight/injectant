@@ -24,12 +24,13 @@ bundle() {
     cp -v README.md LICENSE package.json dist
     cd dist
     /usr/bin/find . -name '*.spec.ts' | xargs rm -rvf
-    npx microbundle -i index.ts --no-compress -f es,umd -o .
+    npx microbundle -i index.ts --no-compress -f esm,umd -o .
     rm -rvf tsconfig.json
     /usr/bin/find . -name '.rts2*' | xargs rm -rf
     package=$(cat package.json)
-    echo "$package" | jq '.main = "injectant.umd.js"' \
-        | jq '.module = "injectant.mjs"' \
+    echo "$package" \
+        | jq '.main = "injectant.umd.js"' \
+        | jq '.module = "injectant.js"' \
         > package.json
     cd ..
     set +x
