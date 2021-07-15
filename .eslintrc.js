@@ -33,8 +33,6 @@ module.exports = {
         'simple-import-sort',
         'promise',
         'sonarjs',
-        'sort-class-members',
-        'etc',
         'only-warn',
     ],
     rules: {
@@ -76,26 +74,6 @@ module.exports = {
         // typescript-eslint
         '@typescript-eslint/no-floating-promises': 1,
         '@typescript-eslint/no-unnecessary-condition': 1,
-        // sort-class-members
-        'sort-class-members/sort-class-members': [
-            1,
-            {
-                order: [
-                    '[static-properties]',
-                    '[static-methods]',
-                    '[properties]',
-                    '[conventional-private-properties]',
-                    'constructor',
-                    '[methods]',
-                    '[conventional-private-methods]',
-                ],
-                accessorPairPositioning: 'getThenSet',
-            },
-        ],
-        // etc
-        'etc/no-unused-declaration': 1,
-        'etc/deprecation': 1,
-        'etc/no-assign-mutated-array': 1,
     },
     overrides: [
         {

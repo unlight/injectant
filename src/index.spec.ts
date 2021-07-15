@@ -1,55 +1,58 @@
 import '@abraham/reflection';
+import expect from 'expect';
 
-import { Injectable, Injector, Service } from '.';
+import { Inject, Injectable, Injector, Service } from '.';
 
 it('smoke', () => {
     expect(Injectable).toBeTruthy();
 });
 
-it('cat', () => {
-    @Injectable()
-    class Cat {
-        sound = () => 'meow';
-    }
-    const cat = Injector.get(Cat);
-    expect(cat.sound()).toEqual('meow');
-});
-
-it('three tier', () => {
-    @Injectable()
-    class ParkService {
-        welcome = () => 'Welcome to park';
-    }
-
-    @Injectable()
-    class ZooController {
-        constructor(private readonly service: ParkService) {}
-        go() {
-            return this.service.welcome();
+describe('General', () => {
+    it('cat', () => {
+        @Injectable()
+        class Cat {
+            sound = () => 'meow';
         }
-    }
+        const cat = Injector.get(Cat);
+        expect(cat.sound()).toEqual('meow');
+    });
 
-    const controller = Injector.resolve(ZooController);
-    expect(controller.go()).toEqual('Welcome to park');
-});
+    it('three tier', () => {
+        @Injectable()
+        class ParkService {
+            welcome = () => 'Welcome to park';
+        }
 
-it('provide and reset', () => {
-    @Injectable()
-    class Cat {
-        sound = () => 'meow';
-    }
+        @Injectable()
+        class ZooController {
+            constructor(private readonly service: ParkService) {}
+            go() {
+                return this.service.welcome();
+            }
+        }
 
-    class Fluffy {
-        sound = () => 'FluffyMEEOOW';
-    }
+        const controller = Injector.resolve(ZooController);
+        expect(controller.go()).toEqual('Welcome to park');
+    });
 
-    Injector.provide(Cat, Fluffy);
-    let cat = Injector.get(Cat);
-    expect(cat.sound()).toEqual('FluffyMEEOOW');
+    it('provide and reset', () => {
+        @Injectable()
+        class Cat {
+            sound = () => 'meow';
+        }
 
-    Injector.clear();
-    cat = Injector.get(Cat);
-    expect(cat.sound()).toEqual('meow');
+        class Fluffy {
+            sound = () => 'FluffyMEEOOW';
+        }
+
+        Injector.provide(Cat, Fluffy);
+        let cat = Injector.get(Cat);
+        expect(cat.sound()).toEqual('FluffyMEEOOW');
+
+        Injector.clear();
+        cat = Injector.get(Cat);
+        expect(cat.sound()).toEqual('meow');
+    });
 });
 
 describe('Injector', () => {
@@ -85,5 +88,29 @@ describe('Injector', () => {
         expect(baz.foobar).toBeInstanceOf(Foobar);
         expect(baz.foobar.foo).toBeInstanceOf(Foo);
         expect(baz.foobar.bar).toBeInstanceOf(Bar);
+    });
+});
+
+describe('Property', () => {
+    it('cat', () => {
+        @Injectable()
+        class Foo {}
+        class Cat {
+            @Inject(Foo) foo;
+        }
+
+        const cat = Injector.resolve(Cat);
+        expect(cat.foo).toBeInstanceOf(Foo);
+    });
+
+    it('from metadata', () => {
+        @Injectable()
+        class Foo {}
+        class Cat {
+            @Inject() foo!: Foo;
+        }
+
+        const cat = Injector.resolve(Cat);
+        expect(cat.foo).toBeInstanceOf(Foo);
     });
 });

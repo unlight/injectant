@@ -2,63 +2,23 @@
 PATH="$PWD/node_modules/.bin":$PATH
 set -e
 
-build() {
+build_tsup() {
     set -x
     rm -rfv dist
-    cp -rfv src dist
-    cat tsconfig.json | jq 'del(.include, .compilerOptions.outDir)' > dist/tsconfig.json
-    cp -v README.md LICENSE package.json dist
-    cd dist
-    /usr/bin/find . -name '*.spec.ts' | xargs rm -rvf
-    tsc -p .
-    rm -rvf tsconfig.json
-    cd ..
-    set +x
-}
-
-bundle() {
-    set -x
-    rm -rfv dist
-    cp -rfv src dist
-    cat tsconfig.json | jq '.compilerOptions.module = "esnext" | del(.include, .compilerOptions.outDir)' > dist/tsconfig.json
-    cp -v README.md LICENSE package.json dist
-    cd dist
-    /usr/bin/find . -name '*.spec.ts' | xargs rm -rvf
-    npx microbundle -i index.ts --no-compress -f esm,umd -o .
-    rm -rvf tsconfig.json
-    /usr/bin/find . -name '.rts2*' | xargs rm -rf
-    package=$(cat package.json)
-    echo "$package" \
-        | jq '.main = "injectant.umd.js"' \
-        | jq '.module = "injectant.js"' \
-        > package.json
-    cd ..
-    set +x
-}
-
-eslint_run() {
-    eslint src --ext ts
-}
-
-lint_watch() {
-    npm run tsclint:w 2>&1 &
-    npm run eslint:w 2>&1 &
-}
-
-
-git_last_release_tag() {
-    result=""
-    rev=$(git rev-list --max-count=1 --tags="v[0-9]*\\.[0-9]*\\.[0-9]*")
-    if [ -n "$rev" ]; then
-        result=$(git describe --tags $rev)
-    fi
-    if [ -n "$result" ]; then
-        result=$(git rev-list --max-parents=0 HEAD)
-    fi
-    echo $result
+    # npm i tsup --no-save on CI/CD
+    npx tsup src/index.ts --format cjs,esm --target es2015 --dts --sourcemap
+    cp -fv README.md LICENSE package.json dist
 }
 
 commit_lint() {
+    if git-branch-is -q -r "^(master)"; then
+        commitlint --edit
+    else
+        true
+    fi
+}
+
+commit_check() {
     set -x
     from=$(git_last_release_tag)
     commitlint --from $from

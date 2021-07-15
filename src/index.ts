@@ -1,9 +1,7 @@
 /// <reference path="reflection.d.ts" />
-
-/**
- * Type for what object is instances of
- */
-export type Type<T = any> = new (...args: any[]) => T;
+type Type<T = any> = new (...arguments_: any[]) => T;
+type PropertyTypeMetadata = { key: string | symbol; token: Type };
+const PROPERTY_TYPE = 'inject:propertytype';
 
 /**
  * The Injector stores services and resolves requested instances.
@@ -12,19 +10,25 @@ export const Injector = new (class {
     /**
      * Alias of resolve.
      */
-    get = this.resolve;
-    private readonly providers = new Map();
+    get = this.resolve.bind(this);
+    readonly providers = new Map();
     /**
      * Resolves instances by injecting required services
      */
-    resolve<T extends Type>(target: T): InstanceType<T> {
+    resolve<T extends Type = any>(target: T): InstanceType<T> {
         if (this.providers.has(target)) {
             target = this.providers.get(target);
         }
-        // tokens are required dependencies, while injections are resolved tokens from the Injector
+        // Tokens are required dependencies, while injections are resolved tokens from the Injector
         const tokens: Type[] = Reflect.getMetadata('design:paramtypes', target) || [];
-        const injections = tokens.map(token => Injector.resolve<any>(token));
-        return new target(...injections);
+        const injections = tokens.map(token => Injector.resolve(token));
+        const result = new target(...injections);
+        const properties: PropertyTypeMetadata[] =
+            Reflect.getMetadata(PROPERTY_TYPE, target) || [];
+        for (const { key, token } of properties) {
+            result[key] = Injector.resolve(token);
+        }
+        return result;
     }
 
     /**
@@ -44,16 +48,25 @@ export const Injector = new (class {
     }
 })();
 
-/**
- * Generic `ClassDecorator` type
- */
-export type GenericClassDecorator<T> = (target: T) => void;
-
-export const Service = (): GenericClassDecorator<Type> => {
-    return (target: Type) => {
+export const Service = (): ClassDecorator => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return target => {
         // do something with `target`,
         // e.g. some kind of validation or passing it to the Injector and store them
     };
 };
 
 export { Service as Injectable };
+
+export function Inject<T = any>(token?: Type<T>): PropertyDecorator {
+    return (target, key): void => {
+        token = token || Reflect.getMetadata('design:type', target, key);
+        if (!token) {
+            throw new Error(`Could find token in ${target.constructor.name}`);
+        }
+        const properties: PropertyTypeMetadata[] =
+            Reflect.getMetadata(PROPERTY_TYPE, target.constructor) || [];
+        properties.push({ key, token });
+        Reflect.defineMetadata(PROPERTY_TYPE, properties, target.constructor);
+    };
+}
