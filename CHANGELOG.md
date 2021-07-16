@@ -1,3 +1,10 @@
+### [2.0.1](https://github.com/unlight/injectant/compare/v2.0.0...v2.0.1) (2021-07-16)
+
+
+### Bug Fixes
+
+* Type fix for inject property decorator ([f417ceb](https://github.com/unlight/injectant/commit/f417cebbde1b1285279adbdcb67fdadc0dce5fff))
+
 ## [2.0.0](https://github.com/unlight/injectant/compare/v1.1.0...v2.0.0) (2021-07-16)
 
 
