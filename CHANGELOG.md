@@ -1,3 +1,14 @@
+## [2.0.0](https://github.com/unlight/injectant/compare/v1.1.0...v2.0.0) (2021-07-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* Build target ES2015
+
+### Features
+
+* Inject property ([1fa5158](https://github.com/unlight/injectant/commit/1fa5158dcd77250100b0a2adbca50f04c219b957))
+
 # [1.1.0](https://github.com/unlight/injectant/compare/v1.0.0...v1.1.0) (2020-02-01)
 
 
