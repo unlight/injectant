@@ -1,6 +1,9 @@
 /// <reference path="reflection.d.ts" />
 type Type<T = any> = new (...arguments_: any[]) => T;
-type PropertyTypeMetadata = { key: string | symbol; token: Type };
+type PropertyTypeMetadata<T = any> = {
+    key: string | symbol;
+    token: Type<T> | string | symbol;
+};
 const PROPERTY_TYPE = 'inject:propertytype';
 
 /**
@@ -26,7 +29,7 @@ export const Injector = new (class {
         const properties: PropertyTypeMetadata[] =
             Reflect.getMetadata(PROPERTY_TYPE, target) || [];
         for (const { key, token } of properties) {
-            result[key] = Injector.resolve(token);
+            result[key] = Injector.resolve<any>(token);
         }
         return result;
     }
@@ -58,7 +61,7 @@ export const Service = (): ClassDecorator => {
 
 export { Service as Injectable };
 
-export function Inject<T = any>(token?: Type<T>): PropertyDecorator {
+export function Inject<T = any>(token?: Type<T> | string | symbol): PropertyDecorator {
     return (target, key): void => {
         token = token || Reflect.getMetadata('design:type', target, key);
         if (!token) {
