@@ -21,7 +21,7 @@ Reflection (any of):
 
 ```ts
 import '@abraham/reflection';
-import { Service, Injectable, Injector } from 'injectant';
+import { Service, Injectable, Injector, Inject } from 'injectant';
 
 @Service()
 class Foo {}
@@ -39,10 +39,20 @@ class Baz {
     constructor(public foobar: Foobar) {}
 }
 
+@Injectable()
+class Engine {}
+
+class Car {
+    @Inject(Engine) engine; // Property injection
+}
+
 let baz = Injector.resolve(Baz);
 console.log(baz.foobar); // instance of Foobar
 console.log(baz.foobar.foo); // instance of Foo
 console.log(baz.foobar.bar); // instance of Bar
+
+const car = Injector.resolve(Car);
+console.log(car.engine); // instance of Engine
 ```
 
 ## Usage in unit tests
